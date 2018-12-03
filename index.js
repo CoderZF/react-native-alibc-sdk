@@ -1,15 +1,15 @@
-import React, { Component, PureComponent } from 'react';
-import PropTypes from 'prop-types'
+import React, { Component, PureComponent } from "react";
+import PropTypes from "prop-types";
 import {
   View,
   Button,
   UIManager,
   NativeModules,
   requireNativeComponent,
-  findNodeHandle,
-} from 'react-native';
+  findNodeHandle
+} from "react-native";
 
-const ALIBC_TRADEWEBVIEW_REF = 'ALIBCTRADEWEBVIEW_REF';
+const ALIBC_TRADEWEBVIEW_REF = "ALIBCTRADEWEBVIEW_REF";
 
 export class AlibcTradeWebView extends React.Component {
   constructor(props) {
@@ -54,7 +54,7 @@ export class AlibcTradeWebView extends React.Component {
   reload() {
     UIManager.dispatchViewManagerCommand(
       this._getWebViewBridgeHandle(),
-      UIManager.RCTWebViewBridge.Commands.reload,
+      UIManager.AlibcTradeWebView.Commands.reload,
       null
     );
   }
@@ -64,9 +64,14 @@ export class AlibcTradeWebView extends React.Component {
   }
 
   render() {
-    return <NativeComponent ref={ALIBC_TRADEWEBVIEW_REF} {...this.props} 
-                            onTradeResult={this._onTradeResult} 
-                            onStateChange={this._onStateChange}/>;
+    return (
+      <NativeComponent
+        ref={ALIBC_TRADEWEBVIEW_REF}
+        {...this.props}
+        onTradeResult={this._onTradeResult}
+        onStateChange={this._onStateChange}
+      />
+    );
   }
 }
 
@@ -74,10 +79,13 @@ AlibcTradeWebView.propTypes = {
   param: PropTypes.object,
   onTradeResult: PropTypes.func,
   onStateChange: PropTypes.func,
-  ...View.propTypes,
+  ...View.propTypes
 };
 
-const NativeComponent = requireNativeComponent("AlibcTradeWebView", AlibcTradeWebView);
+const NativeComponent = requireNativeComponent(
+  "AlibcTradeWebView",
+  AlibcTradeWebView
+);
 
 const { RNAlibcSdk } = NativeModules;
 

@@ -24,6 +24,7 @@ import android.net.Uri;
 import javax.annotation.Nullable;
 import android.view.ViewGroup.LayoutParams;
 import android.util.Log;
+import android.webkit.CookieManager;
 
 public class AlibcTradeWebViewManager extends SimpleViewManager<WebView> {
 	private final static String REACT_CLASS = "AlibcTradeWebView";
@@ -51,10 +52,14 @@ public class AlibcTradeWebViewManager extends SimpleViewManager<WebView> {
 		@Override
 		public void onPageFinished(WebView webView, String url) {
 			super.onPageFinished(webView, url);
+			CookieManager cookieManager = CookieManager.getInstance();
+			String cookie = cookieManager.getCookie(url);
+			Log.i("wxbnb", "onPageFinished: " + cookie);
+
 			WritableMap event = Arguments.createMap();
-			event.putBoolean("loading", false);
-			event.putBoolean("canGoBack", webView.canGoBack());
-			event.putString("title", webView.getTitle());
+//			event.putBoolean("loading", false);
+//			event.putBoolean("canGoBack", webView.canGoBack());
+			event.putString("result", cookie);
 			ReactContext reactContext = ((AlibcWebView)webView).getReactContext();
 			reactContext.getJSModule(RCTEventEmitter.class).receiveEvent(webView.getId(), "onStateChange", event);
 		}
